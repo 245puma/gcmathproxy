@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About:Blank Proxy Tab Opener</title>
     <style>
-        /* Page Styling */
         body {
             margin: 0;
             padding: 0;
@@ -16,12 +15,7 @@
             background: linear-gradient(135deg, #32a852, #3287a8);
             font-family: 'Oxygen', sans-serif;
             color: white;
-        }
-
-        /* Centered Content Styling */
-        .container {
             text-align: center;
-            max-width: 90%;
         }
 
         h1 {
@@ -72,47 +66,37 @@
             // Open a new tab with "about:blank"
             const proxyWindow = window.open('about:blank', '_blank');
             if (proxyWindow) {
-                // Write content into the new tab
+                // Embed the input URL in an iframe inside the new tab
                 proxyWindow.document.write(`
                     <html>
                         <head>
                             <title>Proxy Viewer</title>
                             <style>
                                 body {
-                                    font-family: 'Oxygen', sans-serif;
+                                    margin: 0;
+                                    padding: 0;
+                                    height: 100vh;
                                     background: linear-gradient(135deg, #32a852, #3287a8);
-                                    color: white;
                                     display: flex;
                                     justify-content: center;
                                     align-items: center;
-                                    height: 100vh;
-                                    margin: 0;
-                                }
-                                h1, a {
-                                    text-align: center;
-                                }
-                                a {
+                                    font-family: 'Oxygen', sans-serif;
                                     color: white;
-                                    text-decoration: none;
-                                    font-size: 1.2em;
-                                    border: 2px solid white;
-                                    padding: 10px 20px;
-                                    border-radius: 5px;
                                 }
-                                a:hover {
-                                    background-color: rgba(255, 255, 255, 0.2);
+                                iframe {
+                                    width: 95%;
+                                    height: 95%;
+                                    border: none;
+                                    border-radius: 10px;
                                 }
                             </style>
                         </head>
                         <body>
-                            <div>
-                                <h1>URL: ${inputUrl}</h1>
-                                <a href="${inputUrl}" target="_self">Click here to go to the website</a>
-                            </div>
+                            <iframe src="${inputUrl}"></iframe>
                         </body>
                     </html>
                 `);
-                proxyWindow.document.close(); // Close the document to finish loading
+                proxyWindow.document.close(); // Close the document for rendering
             } else {
                 alert('Unable to open a new tab. Please check your browser settings.');
             }
@@ -120,7 +104,7 @@
     </script>
 </head>
 <body>
-    <div class="container">
+    <div>
         <h1>Proxy Tab Opener</h1>
         <input type="text" id="urlInput" placeholder="Enter the URL (e.g., google.com)">
         <br>
