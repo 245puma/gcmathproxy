@@ -3,22 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proxy Tab Opener</title>
+    <title>About:Blank Proxy Tab Opener</title>
     <script>
         function openProxyTab() {
             // Get the URL from the input box
-            const inputUrl = document.getElementById('urlInput').value;
+            let inputUrl = document.getElementById('urlInput').value;
 
-            // Check if the input is valid
+            // Check if the input is empty
             if (!inputUrl) {
                 alert('Please enter a URL');
                 return;
             }
 
-            // Open the URL in a new tab using "about:blank" as a proxy
+            // Check if the URL starts with "http://" or "https://"
+            if (!inputUrl.startsWith('http://') && !inputUrl.startsWith('https://')) {
+                inputUrl = 'https://' + inputUrl; // Add "https://" if missing
+            }
+
+            // Open a new tab with "about:blank"
             const proxyWindow = window.open('about:blank', '_blank');
             if (proxyWindow) {
-                proxyWindow.location.href = inputUrl;
+                // Write the input URL into the new tab
+                proxyWindow.document.write(`
+                    <html>
+                        <head>
+                            <title>Proxy Viewer</title>
+                        </head>
+                        <body>
+                            <h1>URL: ${inputUrl}</h1>
+                            <p><a href="${inputUrl}" target="_self">Click here to go to the website</a></p>
+                        </body>
+                    </html>
+                `);
+                proxyWindow.document.close(); // Close the document for rendering
             } else {
                 alert('Unable to open a new tab. Please check your browser settings.');
             }
@@ -27,7 +44,7 @@
 </head>
 <body>
     <h1>Proxy Tab Opener</h1>
-    <input type="text" id="urlInput" placeholder="Enter the URL" style="width: 300px;">
+    <input type="text" id="urlInput" placeholder="Enter the URL (e.g., google.com)" style="width: 300px;">
     <button onclick="openProxyTab()">Open Proxy Tab</button>
 </body>
 </html>
