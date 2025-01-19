@@ -63,10 +63,39 @@
                 inputUrl = 'https://' + inputUrl; // Add "https://" if missing
             }
 
-            // Open a new tab with "about:blank" and redirect it to the input URL
+            // Open a new tab with "about:blank"
             const proxyWindow = window.open('about:blank', '_blank');
             if (proxyWindow) {
-                proxyWindow.location.href = inputUrl; // Redirect to the input URL
+                // Write an iframe into the new blank tab
+                proxyWindow.document.write(`
+                    <html>
+                        <head>
+                            <title>Proxy Viewer</title>
+                            <style>
+                                body {
+                                    margin: 0;
+                                    padding: 0;
+                                    height: 100vh;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    background: black;
+                                    font-family: 'Oxygen', sans-serif;
+                                    color: white;
+                                }
+                                iframe {
+                                    width: 100%;
+                                    height: 100%;
+                                    border: none;
+                                }
+                            </style>
+                        </head>
+                        <body>
+                            <iframe src="${inputUrl}"></iframe>
+                        </body>
+                    </html>
+                `);
+                proxyWindow.document.close(); // Close the document to render it
             } else {
                 alert('Unable to open a new tab. Please check your browser settings.');
             }
