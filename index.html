@@ -63,40 +63,10 @@
                 inputUrl = 'https://' + inputUrl; // Add "https://" if missing
             }
 
-            // Open a new tab with "about:blank"
+            // Open a new tab with "about:blank" and redirect it to the input URL
             const proxyWindow = window.open('about:blank', '_blank');
             if (proxyWindow) {
-                // Embed the input URL in an iframe inside the new tab
-                proxyWindow.document.write(`
-                    <html>
-                        <head>
-                            <title>Proxy Viewer</title>
-                            <style>
-                                body {
-                                    margin: 0;
-                                    padding: 0;
-                                    height: 100vh;
-                                    background: linear-gradient(135deg, #32a852, #3287a8);
-                                    display: flex;
-                                    justify-content: center;
-                                    align-items: center;
-                                    font-family: 'Oxygen', sans-serif;
-                                    color: white;
-                                }
-                                iframe {
-                                    width: 95%;
-                                    height: 95%;
-                                    border: none;
-                                    border-radius: 10px;
-                                }
-                            </style>
-                        </head>
-                        <body>
-                            <iframe src="${inputUrl}"></iframe>
-                        </body>
-                    </html>
-                `);
-                proxyWindow.document.close(); // Close the document for rendering
+                proxyWindow.location.href = inputUrl; // Redirect to the input URL
             } else {
                 alert('Unable to open a new tab. Please check your browser settings.');
             }
